@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "show.h"
+#include "struct.h"
 
 
 int main()
