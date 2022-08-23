@@ -40,6 +40,6 @@ typedef struct student
     float weightGrade;//加权绩点
     char engageActivity[50];//活动参与情况
     short credit;//总学分
-};
+}Student;
 
 #endif
