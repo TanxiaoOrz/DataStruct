@@ -13,9 +13,17 @@ typedef struct lessonScore
     struct lessonScore *next;
 }LessonScore;
 
-typedef struct activity //线性表存储活动名
+typedef struct activity
 {
-    char activityName[10][50];
+    char name[10];//名字
+    short showScore;//综测分
+    char time[8];//时间
+    char tail[10];//备注
+}Activity;
+
+typedef struct activityRecord //线性表存储活动名
+{
+    Activity act[50];
     unsigned short count;
 }Activity;
 //通过线性表存储活动名，活动的创建由班主任直接输入活动名，学生通过一个同样数量的字符数字表示相同下标的活动是否有参加
