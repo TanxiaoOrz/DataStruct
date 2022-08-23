@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Structure.h"
 
+extern int a();
 
 int main()
 {
