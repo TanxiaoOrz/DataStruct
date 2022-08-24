@@ -223,7 +223,7 @@ int Traverse(BTree t,LinkList L,int newline,int sum){
                                //入队         
         for(i=0;i<t->keyNumber;i++){  
             Enqueue(L,t->kid[i]);
-            printf(" %ld ",t->key[i].studentNumber);
+            printf(" %ld,%p ",t->key[i].studentNumber,t->key[i].stu);
             //                 //子结点入队 
         }
         Enqueue(L,t->kid[i]);
