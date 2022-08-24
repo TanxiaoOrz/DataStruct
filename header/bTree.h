@@ -52,6 +52,16 @@ void SplitBTNode(BTreeNode **p,BTreeNode **q);//将结点p分裂成两个结点,
 void NewRoot(BTreeNode **t,KeyType k,BTreeNode *kid0,BTreeNode *kid1);//生成新的根结点t,原结点p和结点q为子树指针
 void InsertBTree(BTree *t,int i,KeyType k,BTreeNode *p); //在树上溢，则分裂
 
+void Remove(BTreeNode *p,int i);//删除节点指定关键字并前移
+void Substitution(BTreeNode *p,int i); //查找被删关键字p->key[i](在非叶子结点中)的替代叶子结点(右子树中值最小的关键字) 
+void MoveRight(BTreeNode *p,int i);/*将双亲结点p中的最后一个关键字移入右结点q中将左结点aq中的最后一个关键字移入双亲结点p中*/
+void MoveLeft(BTreeNode *p,int i);/*将双亲结点p中的第一个关键字移入结点aq中，将结点q中的第一个关键字移入双亲结点p中*/
+void Combine(BTreeNode *p,int i); /*将双亲结点p、右结点q合并入左结点aq，并调整双亲结点p中的剩余关键字的位置*/ 
+void AdjustBTree(BTreeNode *p,int i);//删除结点p中的第i个关键字后,调整B树                                        
+int FindBTNode(BTreeNode *p,KeyType k,int *i);//反映是否在结点p中是否查找到关键字k 
+int BTNodeDelete(BTreeNode *p,KeyType k);//在结点p中查找并删除关键字k
+void BTreeDelete(BTree *t,KeyType k);//在树h中查找并删除关键字k
+
 
 int Traverse(BTree t,LinkList L,int newline,int sum);//队列遍历树
 int PrintBTree(BTree t);//输出b树

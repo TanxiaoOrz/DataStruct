@@ -259,6 +259,164 @@ int PrintBTree(BTree t){
     return 1;
 }
 
+void Remove(BTreeNode *p,int i){
+    int j;
+    for(j=i+1;j<p->keyNumber;j++){                    //前移删除key[i]和ptr[i]
+        p->key[j-1]=p->key[j];
+        p->kid[j]=p->kid[j+1];
+    }
+    p->keyNumber--;
+}
+
+void Substitution(BTreeNode *p,int i){
+    BTreeNode *q;
+    for(q=p->kid[i+1];q->kid[0]!=NULL;q=q->kid[0]); //查找右子树的最小值
+    p->key[i]=q->key[0];                            //复制关键字值
+}
+
+
+void MoveRight(BTreeNode *p,int i)
+{    
+    int j;
+    BTreeNode *q=p->kid[i];
+    BTreeNode *aq=p->kid[i-1];
+    for(j=q->keyNumber;j>0;j--){                       //将右兄弟q中所有关键字向后移动一位
+        q->key[j]=q->key[j-1];
+        q->kid[j+1]=q->kid[j];
+    }
+    q->kid[1]=q->kid[0];
+
+    q->key[0]=p->key[i-1];//从双亲结点p移动关键字到右兄弟q中
+    q->keyNumber++;
+
+    p->key[i-1]=aq->key[aq->keyNumber-1];                  //将左兄弟aq中最后一个关键字移动到双亲结点p中
+    q->kid[0]=aq->kid[aq->keyNumber];
+    if (q->kid[0])
+        q->kid[0]->parent=q;//重置被移动的子节点双亲
+    aq->keyNumber--;
+}
+
+void MoveLeft(BTreeNode *p,int i){ 
+    int j;
+    BTreeNode *aq=p->kid[i-1];
+    BTreeNode *q=p->kid[i];
+
+    aq->keyNumber++;                                   //把双亲结点p中的关键字移动到左兄弟aq中
+    aq->key[aq->keyNumber-1]=p->key[i-1]; 
+    aq->kid[aq->keyNumber]=q->kid[0];
+    if (aq->kid[aq->keyNumber])
+    aq->kid[aq->keyNumber]->parent=aq;
+
+    p->key[i-1]=q->key[0];                            //把右兄弟q中的关键字移动到双亲节点p中
+    q->kid[0]=q->kid[1];
+    q->keyNumber--;
+    
+    for(j=1;j<=aq->keyNumber;j++){                     //将右兄弟q中所有关键字向前移动一位
+        q->key[j-1]=q->key[j];
+        q->kid[j]=q->kid[j+1];
+    }
+}
+
+void Combine(BTreeNode *p,int i){
+    int j;
+    BTreeNode *q=p->kid[i];                            
+    BTreeNode *aq=p->kid[i-1];
+
+    aq->keyNumber++;                                  //将双亲结点的关键字p->key[i]插入到左结点aq     
+    aq->key[aq->keyNumber-1]=p->key[i-1];
+    aq->kid[aq->keyNumber]=q->kid[0];
+
+    for(j=1;j<=q->keyNumber;j++){                      //将右结点q中的所有关键字插入到左结点aq 
+        aq->keyNumber++;
+        aq->key[aq->keyNumber-1]=q->key[j-1];
+        aq->kid[aq->keyNumber]=q->kid[j];
+    }
+
+    for(j=i;j<p->keyNumber;j++){                       //将双亲结点p中的p->key[i]后的所有关键字向前移动一位 
+        p->key[j-1]=p->key[j+1-1];
+        p->kid[j]=p->kid[j+1];
+    }
+    p->keyNumber--;                                    //修改双亲结点p的keynum值 
+    free(q);                                        //释放空右结点q的空间
+}
+
+void AdjustBTree(BTreeNode *p,int i){
+    if(i==0)                                        //删除的是最左边关键字
+        if(p->kid[1]->keyNumber>keymin)                   //右结点可以借
+            MoveLeft(p,1);
+        else                                        //右兄弟不够借 
+            Combine(p,1);
+    else if(i==p->keyNumber)                           //删除的是最右边关键字
+        if(p->kid[i-1]->keyNumber>keymin)                 //左结点可以借 
+            MoveRight(p,i);
+        else                                        //左结点不够借 
+            Combine(p,i);
+    else if(p->kid[i-1]->keyNumber>keymin)                //删除关键字在中部且左结点够借 
+        MoveRight(p,i);
+        else if(p->kid[i+1]->keyNumber>keymin)                //删除关键字在中部且右结点够借 
+                MoveLeft(p,i+1);
+            else                                            //删除关键字在中部且左右结点都不够借
+                Combine(p,i);
+}
+
+int FindBTNode(BTreeNode *p,KeyType k,int *i){
+//反映是否在结点p中是否查找到关键字k 
+    if(k.studentNumber<p->key[0].studentNumber){                                //结点p中查找关键字k失败 
+        *i=-1;
+        return 0;
+    }
+    else{                                           //在p结点中查找
+        *i=p->keyNumber-1;
+        while(k.studentNumber<p->key[*i].studentNumber&&i>0)
+        {
+            (*i)--;
+        }
+        if(k.studentNumber==p->key[*i].studentNumber)                            //结点p中查找关键字k成功 
+            return 1;
+        else
+            return 0;        
+    }
+}
+
+int BTNodeDelete(BTreeNode *p,KeyType k){
+    int i;
+    int found;                                  //查找标志 
+    if(p==NULL)                                     
+        return 0;
+    else{
+        found=FindBTNode(p,k,&i);                //返回查找结果 
+        if(found==1){                           //查找成功 
+            if(p->kid[i]!=NULL){                  //删除的是非叶子结点
+                Substitution(p,i);                  //寻找相邻关键字(右子树中最小的关键字) 
+                BTNodeDelete(p->kid[i+1],p->key[i]);  //执行删除操作 
+            }
+            else
+                Remove(p,i);                        //从结点p中位置i处删除关键字
+        }
+        else
+            found=BTNodeDelete(p->kid[i+1],k);    //沿孩子结点递归查找并删除关键字k
+        if(p->kid[i+1]!=NULL)
+            if(p->kid[i+1]->keyNumber<keymin)               //删除后关键字个数小于MIN且是递归上来的，即不是根节点就是叶子节点的删除，叶子本身不进行判断，由副节点判断，保证根节点不受最小值限制
+                AdjustBTree(p,i+1);                   //调整B树 
+        return found;
+    }
+}
+
+void BTreeDelete(BTree *t,KeyType k){  
+    BTreeNode *p;
+    int a=BTNodeDelete(*t,k);                        //删除关键字k 
+    if(a==0)                                        //查找失败 
+        printf("关键字%d不在B树中\n",k.studentNumber);
+    else
+    { 
+        if((*t)->keyNumber==0)//若根节点无关键字检查
+        {                           
+            p=*t;
+            (*t)=(*t)->kid[0];
+            free(p);
+        }
+    }
+}
 
 int test2()
 {
@@ -296,15 +454,16 @@ int test2()
             printf("\n");
             break;
         }
-/*        case 3:{
+        case 3:{
             printf("Enter number to DeleteBTree:_____\b\b\b");
-            scanf("%d",&k);
-            BTreeDelete(t,k);
+            scanf("%ld",&k.studentNumber);
+            BTreeDelete(&t,k);
             printf("\n");
             printf("DeleteBTree successfully.\n");
+            PrintBTree(t);
             break;
         }
-        case 4:{
+/*        case 4:{
             DestroyBTree(t);
             break;
             printf("DestroyBTree successfully.\n");
@@ -320,6 +479,8 @@ int test2()
  }
 
 }
+
+
 
 int test1()
 {
