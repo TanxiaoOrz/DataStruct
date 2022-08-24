@@ -11,7 +11,7 @@ typedef struct lessonScore
     short credit; //学分
     char teacher[10];//任课教师
     struct lessonScore *next;
-}LessonScore;
+}LessonScore,*lessonLink;
 
 typedef struct activity
 {
