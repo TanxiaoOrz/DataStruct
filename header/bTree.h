@@ -6,13 +6,6 @@
 #define orderMax 10 //定义阶数最大值
 #define orderNow 3 //现在阶数
 
-int order=orderNow;
-int keyMax=orderNow-1; //最大关键字数量
-int keymin=(orderNow-1)/2; //最小关键字数量
-
-
-
-
 typedef struct keyType //bTree中存储的关键字信息
 {
     long studentNumber;//关键字值学号
@@ -58,5 +51,9 @@ void InsertBTNode(BTreeNode **p,int i,KeyType k,BTreeNode *q);//将关键字k和
 void SplitBTNode(BTreeNode **p,BTreeNode **q);//将结点p分裂成两个结点,前一半保留,后一半移入结点q
 void NewRoot(BTreeNode **t,KeyType k,BTreeNode *kid0,BTreeNode *kid1);//生成新的根结点t,原结点p和结点q为子树指针
 void InsertBTree(BTree *t,int i,KeyType k,BTreeNode *p); //在树上溢，则分裂
+
+
+int Traverse(BTree t,LinkList L,int newline,int sum);//队列遍历树
+int PrintBTree(BTree t);//输出b树
 
 #endif

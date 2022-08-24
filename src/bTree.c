@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
+int order=orderNow;
+int keyMax=orderNow-1; //最大关键字数量
+int keymin=(orderNow-1)/2; //最小关键字数量
 
 int InitBTree(BTree *t)//初始化树
 {
@@ -212,7 +214,7 @@ void DestroyQueue(LinkList L){
     }
 }
 
-Status Traverse(BTree t,LinkList L,int newline,int sum){
+int Traverse(BTree t,LinkList L,int newline,int sum){
 //用队列遍历输出B树 
     int i;
     BTree p;
@@ -240,21 +242,21 @@ Status Traverse(BTree t,LinkList L,int newline,int sum){
          Dequeue(L,&p);                              //出队，以p返回 
          Traverse(p,L,newline,sum);                 //遍历出队结点 
      }
-     return OK;
+     return 1;
  }
 
 
-Status PrintBTree(BTree t){
+int PrintBTree(BTree t){
 //输出B树 
    LinkList L;
     if(t==NULL){
         printf("  B树为空树");
-        return OK;
+        return 1;
     }
     InitQueue(&L);                                   //初始化队列 
     Traverse(t,L,0,0);                              //利用队列输出 
     DestroyQueue(L);                                //销毁队列 
-    return OK;
+    return 1;
 }
 
 
