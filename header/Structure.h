@@ -9,8 +9,7 @@ typedef struct lessonScore
     char time; //修读学期
     char lessonName[10]; //课程名
     short credit; //学分
-    char teacher[10];//任课教师
-    struct lessonScore *last;    
+    char teacher[10];//任课教师    
     struct lessonScore *next;
 }LessonScore,*lessonLink;
 
@@ -42,7 +41,9 @@ typedef struct student  //存储学生信息的单链表节点
     float weightGrade;//加权绩点   
     short credit;//总学分
     char engageActivity[50];//活动参与情况
-}Student;
+    int show;//综测分
+    char showFlag;//活动变化变量
+}Student, *PStu;
 
 
 
