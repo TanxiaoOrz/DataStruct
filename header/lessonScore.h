@@ -13,5 +13,10 @@ void lessonBackInsert(LessonScore *p,LessonScore *q);//将q插入p的后面
 int lessonDelete(lessonLink h,long lessonCode);//删除节点，1代表成功，0代表出错
 void lessonChange(LessonScore *lnode,long lessonCode,short score,char time,char lessonName[],short credit,char teacher[]);//修改课程成绩信息
 void lessonPrint(LessonScore *p);//输出成绩信息
+int newLesson(lessonLink h);//根据输入创建新的课程并插入课程链表中,1表示已存在
+void lessonPrintHead(lessonLink h);//遍历输出课程链表
+int changeLesson(lessonLink h);//根据输入修改课程信息，1代表输入的编号不存在
+void deleteLesson(lessonLink h);//根据输入删除节点
+
 
 #endif
