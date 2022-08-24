@@ -10,6 +10,7 @@ typedef struct lessonScore
     char lessonName[10]; //课程名
     short credit; //学分
     char teacher[10];//任课教师
+    struct lessonScore *last;    
     struct lessonScore *next;
 }LessonScore,*lessonLink;
 
