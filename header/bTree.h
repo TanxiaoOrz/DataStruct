@@ -9,7 +9,7 @@
 typedef struct keyType //bTree中存储的关键字信息
 {
     long studentNumber;//关键字值学号
-    Student *stu;//该学号对应的学生信息指针
+    pSNode *stu;//该学号对应的学生信息指针
 }KeyType;
 
 typedef struct bTreeNode//BTree的节点类型
