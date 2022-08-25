@@ -191,7 +191,7 @@ int changeLesson(lessonLink h)//根据输入修改课程信息，1代表输入�
     int i=searchLesson(h,lessonCode,&p);
     if (!i)
     {
-        printf("该编号不存在");
+        printf("该编号不存在\n");
         return 1;
     }
     printf("请输入新的分数__________________\b\b\b\b\b");
