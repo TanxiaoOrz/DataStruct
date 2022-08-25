@@ -28,4 +28,5 @@ void changePanelLesson( ); //修改学生的课程信息的显示面板
 void ChangeStuLesson(PStu stu); //修改学生的课程信息
 void changeStuBasic(PStu stu); //修改学生基本信息
 int changeStu(stuhead stuh,int flag[]); //传入权限数组,返回值0代表未修改信息不用重置
+void calStuLess(PStu stu); //计算与成绩链表有关的变量
 #endif

@@ -180,7 +180,7 @@ void changePanelLesson( ) //修改学生的课程信息的显示面板
     printf("\t2、修改课程信息\n");
     printf("\t3、删除课程信息\n");
     printf("\t4、返回上一界面\n");
-    printf("输入数字选择选项_______\b\b\b\b\n");
+    printf("输入数字选择选项_______\b\b\b\b");
 }
 
 void ChangeStuLesson(PStu stu) //修改学生的课程信息
@@ -197,22 +197,22 @@ void ChangeStuLesson(PStu stu) //修改学生的课程信息
             case 1:
             {
                 newLesson(stu->score);
-                showStuLesson(stu);
-                system("pause");//临时暂停，查看信息
+                //showStuLesson(stu);
+                //system("pause");//临时暂停，查看信息
                 return;
             }
             case 2:
             {
                 changeLesson(stu->score);
-                showStuLesson(stu);
-                system("pause");//临时暂停，查看信息
+                //showStuLesson(stu);
+                //system("pause");//临时暂停，查看信息
                 return;
             }
             case 3:
             {
                 deleteLesson(stu->score);
-                showStuLesson(stu);
-                system("pause");//临时暂停，查看信息
+                //showStuLesson(stu);
+                //system("pause");//临时暂停，查看信息
                 return;
             }
             case 4:
@@ -283,7 +283,7 @@ int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未�
                 if (flag[0])
                 {
                     changeStuBasic(result.p->key[result.position].stu->stu);
-                    system("pause");//临时暂停，查看信息
+                    //system("pause");//临时暂停，查看信息
                     return 1;
                 }
                 else
@@ -298,8 +298,9 @@ int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未�
                 if (flag[1])
                 {
                     ChangeStuLesson(result.p->key[result.position].stu->stu);
-                    //calStuLess();
-                    //system("pause");//临时暂停，查看信息
+                    calStuLess(result.p->key[result.position].stu->stu);
+                    showStuLesson(result.p->key[result.position].stu->stu);
+                    system("pause");//临时暂停，查看信息
                     return 1;
                 }
                 else
@@ -335,12 +336,94 @@ int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未�
     }
 }
 
+void calStuLess(PStu stu) //计算与成绩链表有关的变量
+{
+    float scoreAll=0,gradeAll=0;
+    int credit=0; //初始化记录
+
+    for (LessonScore *p = stu->score->next; p; p=p->next) //循环遍历
+    {
+        /* code */
+        scoreAll=scoreAll+p->socre*p->credit;
+        if (p->socre>=95)   //判断绩点
+        {
+            gradeAll=gradeAll+4.5*p->credit;;
+        }
+        else{
+            if (p->socre>=90)
+            {
+                gradeAll=gradeAll+4*p->credit;;
+            }
+            else{
+                if (p->socre>=85)
+                {
+                    gradeAll=gradeAll+3.5*p->credit;;
+                }
+                else{
+                    if (p->socre>=80)
+                    {
+                        gradeAll=gradeAll+3*p->credit;;
+                    }
+                    else{
+                        if (p->socre>=75)
+                        {
+                            gradeAll=gradeAll+2.5*p->credit;;
+                        }
+                        else{
+                            if (p->socre>=70)
+                            {
+                                gradeAll=gradeAll+2*p->credit;;
+                            }
+                            else{
+                                if (p->socre>=65)
+                                {
+                                    gradeAll=gradeAll+1.5;
+                                }else{
+                                    if (p->socre>=65)
+                                    {
+                                        gradeAll=gradeAll+1.5*p->credit;;
+                                    }
+                                    else{
+                                        if (p->socre>=60)
+                                        {
+                                            gradeAll=gradeAll+1*p->credit;;
+                                        }
+                                        else
+                                        {
+                                            gradeAll=gradeAll;
+                                        }
+                                    }
+                                }
+                            } 
+                        }
+                    }
+                }
+            }
+        }  
+        credit=credit+p->credit;
+    }
+    if (credit)//如果不是空表
+    {
+        stu->credit=credit;
+        stu->weightScore=scoreAll/credit;
+        stu->weightGrade=gradeAll/credit;
+    }
+    else
+    {
+        stu->credit=0;
+        stu->weightScore=0;
+        stu->weightGrade=0;
+    }
+    
+    
+}
+
 void testS()
 {
     stuhead sh;
     studentHeadInital(&sh);
 
-    for (size_t i = 0; i < 6; i++)
+    for (size_t i = 0; i < 2; i++)
     {
         /* code */
         printf("当前链表\n");
@@ -349,7 +432,7 @@ void testS()
         PrintBTree(sh->t);
         newStudent(sh);
     }
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 5; i++)
     {
         /* code */
         printf("当前链表\n");
