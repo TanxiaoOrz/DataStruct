@@ -23,5 +23,9 @@ void newStudent(stuhead stuh); //新建学生信息
 void deleteStudent(stuhead stuh); //删除学生信息
 void printTitleStudent(); //输出学生格式
 void studentHeadInital(stuhead *stuh); //初始化学生存储管理结构
-
+void showStuLesson(PStu stu); //显示学生的课程信息
+void changePanelLesson( ); //修改学生的课程信息的显示面板
+void ChangeStuLesson(PStu stu); //修改学生的课程信息
+void changeStuBasic(PStu stu); //修改学生基本信息
+int changeStu(stuhead stuh,int flag[]); //传入权限数组,返回值0代表未修改信息不用重置
 #endif
