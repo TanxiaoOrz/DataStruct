@@ -129,7 +129,8 @@ void lessonPrintHead(lessonLink h)//遍历输出课程链表
 {
     if (!h||h->next==NULL)//判断空链表
     {
-        printf("无课程成绩信息");
+        printf("无课程成绩信息\n");
+        return;
     }   
     LessonScore *p;
     printf("  课程编号    课程名      教师      成绩      学分  修读学期\n");
