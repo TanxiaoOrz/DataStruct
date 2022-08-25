@@ -6,10 +6,12 @@
 #define orderMax 10 //定义阶数最大值
 #define orderNow 3 //现在阶数
 
+
+
 typedef struct keyType //bTree中存储的关键字信息
 {
     long studentNumber;//关键字值学号
-    pSNode *stu;//该学号对应的学生信息指针
+    pSNode stu;//该学号对应的学生信息指针
 }KeyType;
 
 typedef struct bTreeNode//BTree的节点类型

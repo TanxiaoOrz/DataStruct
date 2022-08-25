@@ -115,7 +115,7 @@ void NewRoot(BTreeNode **t,KeyType k,BTreeNode *kid0,BTreeNode *kid1)//生成新
     (*t)->parent=NULL;
 }
 
-void InsertBTree(BTree *t,int i,KeyType k,BTreeNode *p)//在树t上结点q的key[i]与key[i+1]之间插入关键字k。若引起结点过大,则沿双亲链进行必要的结点分裂调整,使t仍是B树
+void InsertBTree(BTree *t,int i,KeyType k,BTreeNode *p)//在树t上结点p的key[i]与key[i+1]之间插入关键字k。若引起结点过大,则沿双亲链进行必要的结点分裂调整,使t仍是B树
 {
 
     BTreeNode *q;   //分裂节点时的存储指针和插入时的额外子节点指针

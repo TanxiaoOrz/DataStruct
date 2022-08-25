@@ -45,6 +45,14 @@ typedef struct student  //存储学生信息的单链表节点
     char showFlag;//活动变化变量
 }Student, *PStu;
 
+typedef struct doubleLinkStruct //双向链表节点
+{
+    /* data */
+    PStu stu;
+    struct doubleLinkStruct *prev;
+    struct doubleLinkStruct *next;
+}StuNode, *pSNode;
+
 
 
 #endif
