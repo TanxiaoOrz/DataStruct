@@ -46,7 +46,7 @@ typedef struct searchResult
 int InitBTree(BTree *t);// 初始化树
 
 int SearchBTNode(BTreeNode *p,KeyType k);//节点中查找
-SearchResult SearchBTree(BTree t,KeyType k);//查找关键字对应节点
+SearchResult SearchBTree(BTree t,KeyType k);//查找关键字对应节点,找到返回值的flag为Y，没找到为N
 void InsertBTNode(BTreeNode **p,int i,KeyType k,BTreeNode *q);//将关键字k和结点q分别插入到p->key[i+1]和p->ptr[i+1]中
 void SplitBTNode(BTreeNode **p,BTreeNode **q);//将结点p分裂成两个结点,前一半保留,后一半移入结点q
 void NewRoot(BTreeNode **t,KeyType k,BTreeNode *kid0,BTreeNode *kid1);//生成新的根结点t,原结点p和结点q为子树指针
