@@ -3,6 +3,7 @@
 #include <string.h>
 #include "student.h"
 #include "lessonScore.h"
+#include "activity.h"
 
 
 void studentCreate(Student **s,char name[],long code,short age,char sex)
@@ -11,7 +12,7 @@ void studentCreate(Student **s,char name[],long code,short age,char sex)
     (*s)->studentNumber=code;
     (*s)->age=age;
     (*s)->sex=sex;
-    strcpy((*s)->studentName,name);
+    strncpy((*s)->studentName,name,10);
     (*s)->socreFlag=0;
     (*s)->weightGrade=0;
     (*s)->weightScore=0;
@@ -22,7 +23,7 @@ void studentCreate(Student **s,char name[],long code,short age,char sex)
     for (size_t i = 0; i < 50; i++)
     {
         /* code */
-        (*s)->engageActivity[i]=0;
+        (*s)->engageActivity[i]='N';
     }   
 }
 
@@ -161,11 +162,6 @@ void deleteStudent(stuhead stuh) //删除学生信息
     }    
 }
 
-void writeStudent(PStu stu) //向文件中写入stu所有信息
-{
-
-}
-
 void showStuLesson(PStu stu) //显示学生的课程信息
 {
     printTitleStudent();//打印学生头
@@ -245,6 +241,54 @@ void changeStuBasic(PStu stu) //修改学生基本信息
     system("pause");
 }
 
+void printStuAct(PStu stu)  //输出学生出勤信息
+{
+    printTitleStudent();//打印学生头
+    printstudent(stu);//显示该学生信息
+    printf("\t\t出勤情况为Y代表出勤，N代表缺席\n");
+    printf("出勤  ");
+    printActTitle();
+    for (size_t i = 0; i < actRec.count; i++)
+    {
+        /* code */
+        printf("%4c   ",stu->engageActivity[i]);
+        printAct(actRec.act[i],i);
+    } 
+}
+
+void ChangeStuActivity(PStu stu) //修改学生的出勤信息
+{
+    printStuAct(stu);
+    printf("如果原出勤信息是“Y”则改为“N”，反之改为“Y”");
+    printf("请输入要修改出勤的活动序号____________\b\b\b\b\b\b\b\b");
+    int i;
+    scanf("%d",&i);
+    if (searchActRec(i))    //如果序号合法
+    {
+        if (/* condition */stu->engageActivity[i]=='Y')
+        {
+            /* code */stu->engageActivity[i]='N';
+        }else
+        {
+            stu->engageActivity[i]='Y';
+        }   
+    }else{
+        printf("错误的序号\n");
+    }
+}
+
+void calStuAct(PStu stu)    //计算综测分
+{
+    short show=0;
+    for (size_t i = 0; i < actRec.count; i++)
+    {
+        /* code */
+        if (stu->engageActivity[i]=='Y')
+            show=show+actRec.act[i]->showScore;
+    }
+    stu->show=show;
+}
+
 int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未修改信息不用重置
 {
     long code;
@@ -264,11 +308,11 @@ int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未�
 
     printf("请选择修改操作：\n");
     if (flag[0])
-        printf("\t1、修改基本信息\n");
+        printf("\t1、修改学生基本信息\n");
     if (flag[1])
-        printf("\t2、修改课程信息\n");
+        printf("\t2、修改课程成绩信息\n");
     if (flag[2])
-        printf("\t3、修改活动信息\n");
+        printf("\t3、修改活动出勤信息\n");
     printf("\t4、退出\n");
     printf("输入数字选择选项_______\b\b\b\b");
 
@@ -313,9 +357,9 @@ int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未�
             {
                 if (flag[2])
                 {
-                    //ChangeStuActivity(result.p->key[result.position].stu);
-                    //calStuAct();
-                    //system("pause");//临时暂停，查看信息
+                    ChangeStuActivity(result.p->key[result.position].stu->stu);
+                    calStuAct(result.p->key[result.position].stu->stu);
+                    system("pause");//临时暂停，查看信息
                     return 1;
                 }
                 else
@@ -414,15 +458,125 @@ void calStuLess(PStu stu) //计算与成绩链表有关的变量
         stu->weightScore=0;
         stu->weightGrade=0;
     }
-    
-    
+}
+
+int writeStudent(stuhead stu)
+{
+    if (stu->h->next==NULL)
+    {
+        printf("该链表内没有学生");
+        return EOF;
+    }
+    pSNode p = stu->h->next;
+    int flag=0;
+    FILE *fp=fopen("student.txt","w");
+    while (1)//循环写入单个学生
+    {
+        flag=fprintf(fp,"%ld ",p->stu->studentNumber);
+        flag=fprintf(fp,"%s ",p->stu->studentName);
+        flag=fprintf(fp,"%hd ",p->stu->age);
+        flag=fprintf(fp,"%c ",p->stu->sex);
+        flag=fprintf(fp,"%f ",p->stu->weightScore);
+        flag=fprintf(fp,"%f ",p->stu->weightGrade);
+        flag=fprintf(fp,"%hd ",p->stu->credit);
+        flag=fprintf(fp,"%d ",p->stu->show);
+        for (size_t i = 0; i <50; i++)
+        {
+            flag=fputc(p->stu->engageActivity[i],fp);
+        }
+        
+        for (LessonScore *lesson=p->stu->score->next; lesson; lesson=lesson->next)//循环写入单个学生的课程
+        {
+            flag=fprintf(fp,"%d ",1);//未结束标志变量
+            flag=fprintf(fp,"%ld ",lesson->lessonCode);
+            flag=fprintf(fp,"%s ",lesson->lessonName);
+            flag=fprintf(fp,"%s ",lesson->teacher);
+            flag=fprintf(fp,"%hd ",lesson->credit);
+            flag=fprintf(fp,"%hd ",lesson->socre);
+            flag=fprintf(fp,"%c",lesson->time);
+        }
+        flag=fprintf(fp,"0");//输入结束标志
+        p=p->next;
+        if (p)
+            flag=fprintf(fp,"\n");  //若还有下一个换行
+        else
+            break;
+    }
+    return flag;
+}
+
+int readStudent(stuhead stuh)
+{
+    int flag=0;
+    FILE *fp=fopen("student.txt","r");
+    lessonLink h=NULL;
+    while (!feof(fp))
+    {
+        /* code */
+        char name[10];
+        long code;
+        short age;
+        char sex;
+        KeyType key;
+        PStu pstu=NULL;
+        flag=fscanf(fp,"%ld",&code);
+        
+        key.studentNumber=code;
+        {
+            flag=fscanf(fp,"%s",name);
+            flag=fscanf(fp,"%hd",&age);
+            flag=fscanf(fp,"%c",&sex);
+            flag=fscanf(fp,"%c",&sex);
+            studentCreate(&pstu,name,code,age,sex);//新建学生节点
+            pSNode pSnode = createStuNode(pstu);
+            InsertStuLink(stuh->h,pSnode);//加入链表
+            key.stu=pSnode;
+            SearchResult result = SearchBTree(stuh->t, key);
+            InsertBTree(&(stuh->t),result.position,key,result.p);//加入二叉树
+            flag=fscanf(fp,"%f",&pstu->weightScore);
+            flag=fscanf(fp,"%f",&pstu->weightGrade);
+            flag=fscanf(fp,"%hd",&pstu->credit);
+            flag=fscanf(fp,"%d",&pstu->show);
+            pstu->engageActivity[0]=fgetc(fp);
+            for (size_t i = 0; i <50; i++)
+            {
+                pstu->engageActivity[i]=fgetc(fp);
+            }
+            for (char i = fgetc(fp); i=='1'; i = fgetc(fp))//
+            {
+                /* code */
+                long lessonCode;
+                short score;
+                char time;
+                char lessonName[10];
+                short credit;
+                char teacher[10];
+                flag=fscanf(fp,"%ld",&lessonCode);
+                flag=fscanf(fp,"%s",lessonName);
+                flag=fscanf(fp,"%s",teacher);
+                flag=fscanf(fp,"%hd",&credit);
+                flag=fscanf(fp,"%hd",&score);
+                flag=fscanf(fp,"%c",&time);
+                flag=fscanf(fp,"%c",&time);
+                h =pstu->score;
+                LessonScore *p,*q;//p是插入位置，q是创建的节点指针
+                searchLesson(h,lessonCode,&p);
+                createLessonNode(&q,lessonCode,score,time,lessonName,credit,teacher);
+                lessonBackInsert(p,q);
+            }
+            fgetc(fp);//吸收\n或到尾端
+        }    
+    }
+    return flag;
 }
 
 void testS()
 {
     stuhead sh;
     studentHeadInital(&sh);
-
+    readStudent(sh);
+    initalActRec();
+    readActRec();
     for (size_t i = 0; i < 2; i++)
     {
         /* code */
@@ -432,7 +586,7 @@ void testS()
         PrintBTree(sh->t);
         newStudent(sh);
     }
-    for (size_t i = 0; i < 5; i++)
+    for (size_t i = 0; i < 3; i++)
     {
         /* code */
         printf("当前链表\n");
@@ -446,6 +600,7 @@ void testS()
         PrintAllstudent(sh->h);
         printf("当前树\n");
         PrintBTree(sh->t);
+    writeStudent(sh);
     
     
 }

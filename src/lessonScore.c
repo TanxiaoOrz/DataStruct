@@ -17,8 +17,8 @@ int createLessonNode(LessonScore **lnode,long lessonCode,short score,char time,c
     (*lnode)->socre=score;
     (*lnode)->time=time;
     (*lnode)->credit=credit;
-    strcpy((*lnode)->lessonName,lessonName);
-    strcpy((*lnode)->teacher,teacher);
+    strncpy((*lnode)->lessonName,lessonName,20);
+    strncpy((*lnode)->teacher,teacher,10);
     return 0;
 }
 
@@ -109,9 +109,9 @@ void lessonChange(LessonScore *lnode,long lessonCode,short score,char time,char 
     (*lnode).time=time;
     (*lnode).credit=credit;
     if (lnode->lessonName!=lessonName)
-        strcpy((*lnode).lessonName,lessonName);
+        strncpy((*lnode).lessonName,lessonName,20);
     if (lnode->teacher!=teacher)
-        strcpy((lnode)->teacher,teacher);
+        strncpy((lnode)->teacher,teacher,10);
 }
 
 void lessonPrint(LessonScore *p)
