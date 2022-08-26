@@ -16,9 +16,9 @@ typedef struct lessonScore
 typedef struct activity
 {
     char name[19];//名字
-    short showScore;//综测分
     char time[11];//时间
     char tail[30];//备注
+    short showScore;//综测分
 }Activity;
 
 typedef struct activityRecord //线性表存储活动名

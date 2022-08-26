@@ -359,6 +359,7 @@ int changeStu(stuhead stuh,int flag[]) //传入权限数组,返回值0代表未�
                 {
                     ChangeStuActivity(result.p->key[result.position].stu->stu);
                     calStuAct(result.p->key[result.position].stu->stu);
+                    printStuAct(result.p->key[result.position].stu->stu);
                     system("pause");//临时暂停，查看信息
                     return 1;
                 }
@@ -570,7 +571,133 @@ int readStudent(stuhead stuh)
     return flag;
 }
 
+
+void newActStu(stuhead stuh)
+{
+    printf("当前所有活动：\n");
+    printActRec();  //展示当前所有活动记录
+    printf("新建活动：\n");
+    short change = newActRec();
+    if (change==-1)
+    {
+        system("pause");
+        return ;
+    }
+    for (pSNode i = stuh->h->next; i;i=i->next)
+    {
+        char engage='N';
+
+        printf("\n\n");
+        printTitleStudent();
+        printstudent(i->stu);
+        printf("请输入该学生的新活动参与记录______(Y/N)\b\b\b\b\b\b\b\b");
+        scanf("%c",&engage);
+        scanf("%c",&engage);
+        i->stu->engageActivity[actRec.count-1]=engage;
+
+        if (change&&engage=='Y')
+        {
+            i->stu->show+=change;
+        }
+        
+    }
+    printf("所有学生输入完毕");
+    system("pause");
+}
+
+void deleteActStu(stuhead stuh)
+{
+    printf("当前所有活动：\n");
+    printActRec();  //展示当前所有活动记录
+    printf("选择删除活动序号：_____\b\b\b");
+    int i=-1;
+    scanf("%d",&i);
+    Activity* p =searchActRec(i);
+    if (!p)
+    {
+        printf("！！！错误的序号输入！！！");
+        system("pause");
+        return;
+    }
+    short change = deleteActRec(i);//记录表中删除i
+    for (pSNode p = stuh->h->next; p;p=p->next)
+    {
+        if (change&&p->stu->engageActivity[i]=='Y')
+        {
+            p->stu->show+=change;
+        }
+        for (size_t j = i; j < actRec.count; j++)
+        {
+            /* code */
+            p->stu->engageActivity[i]=p->stu->engageActivity[i+1];
+        }
+    }
+    printf("所有学生更新完毕");
+    system("pause");
+}
+
+void printStuActPrs(stuhead stuh,int i) //根具选择的活动，输出学生信息
+{
+    printActTitle();
+    printAct(actRec.act[i],i);
+    printf("参与的学生如下：\n");
+    printTitleStudent();
+    pSNode p=stuh->h->next;
+    while (p)
+    {
+        if (p->stu->engageActivity[i]=='Y')
+        {
+            printstudent(p->stu); 
+        }
+        p=p->next;        
+    }
+    printf("缺席的学生如下：\n");
+    printTitleStudent();
+    p=stuh->h->next;
+    while (p)
+    {
+        if (p->stu->engageActivity[i]!='Y')
+        {
+            printstudent(p->stu);
+            
+        }
+        p=p->next;        
+    }
+}
+
 void testS()
+{
+    stuhead sh;
+    studentHeadInital(&sh);
+    readStudent(sh);
+    initalActRec();
+    readActRec();
+    printf("当前链表\n");
+    PrintAllstudent(sh->h);
+    int i;
+    printf("请输入要查询出勤信息的活动序号_____\b\b\b");
+    scanf("%d",&i);
+    printStuActPrs(sh,i);
+}
+
+void testS2()
+{
+    stuhead sh;
+    studentHeadInital(&sh);
+    readStudent(sh);
+    initalActRec();
+    readActRec();
+    printf("当前链表\n");
+    PrintAllstudent(sh->h);
+    deleteActStu(sh);
+    printf("当前链表\n");
+    PrintAllstudent(sh->h);
+    int i[3]={1,1,1};
+    changeStu(sh,i);
+    
+}
+
+void testS1()
 {
     stuhead sh;
     studentHeadInital(&sh);

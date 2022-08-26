@@ -10,9 +10,9 @@ ActivityRecord actRec; //全局活动记录线性表
 Activity* createAct(char name[],short showScore,char time[],char tail[]) //新建活动
 {
     Activity *act =(Activity*)malloc(sizeof(Activity));
-    strncpy(act->name,name,19);
-    strncpy(act->time,time,11);
-    strncpy(act->tail,tail,30);
+    strncpy(act->name,name,18);
+    strncpy(act->time,time,10);
+    strncpy(act->tail,tail,29);
     act->showScore=showScore;
     return act;
 }
@@ -80,8 +80,13 @@ void printActRec() //输出所有活动记录
      
 }
 
-void newActRec() //根据输入新增记录
+short newActRec() //根据输入新增记录
 {
+    if (actRec.count>=50)
+    {
+        printf("!!!活动记录表已满!!!");
+        return -1;
+    }
     char name[19];//名字
     short showScore;//综测分
     char time[11];//时间
@@ -95,21 +100,23 @@ void newActRec() //根据输入新增记录
     printf("请输入活动备注____________\b\b\b\b\b\b\b\b");
     scanf("%s",tail);
     addActRec(createAct(name,showScore,time,tail));
+    return showScore;
 }
 
-int deleteActRec(int i) //删除i记录，0失败,返回p的showScore
+short deleteActRec(int i) //删除i记录，0失败,返回p的showScore
 {
     Activity* p =searchActRec(i);
     if (p)
     {
+        short change=-(p->showScore);
         free(p);
-        for (size_t j = i; i < (actRec.count-1); j++)
+        for (size_t j = i; j < (actRec.count-1); j++)
         {
             /* code */
             actRec.act[i]=actRec.act[i+1];
         }
         actRec.count--;
-        return -(p->showScore);
+        return change;
     }
     else
     {
@@ -121,9 +128,9 @@ int changeActRec(Activity *act,char name[],char time[],char tail[],short showSco
 {
     int distance = act->showScore-showScore;
     act->showScore=showScore;
-    strncpy(act->name,name,19);
-    strncpy(act->time,time,11);
-    strncpy(act->tail,tail,30);
+    strncpy(act->name,name,18);
+    strncpy(act->time,time,10);
+    strncpy(act->tail,tail,29);
     return distance;
 }
 

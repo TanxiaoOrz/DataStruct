@@ -32,5 +32,10 @@ void calStuLess(PStu stu); //计算与成绩链表有关的变量
 void ChangeStuActivity(PStu stu); //修改学生的出勤信息
 void printStuAct(PStu stu);  //输出学生出勤信息
 void calStuAct(PStu stu);    //计算综测分
+void newActStu(stuhead stuh);   //完成获取输入值创建活动，并对所有学生参加赋值并更新综测
+void deleteActStu(stuhead stuh); //选择删除活动记录
+void printStuActPrs(stuhead stuh,int i); //根具选择的活动，输出学生信息
+int readStudent(stuhead stuh); //读取所有学生记录
+int writeStudent(stuhead stu); //保存所有学生记录
 
 #endif
