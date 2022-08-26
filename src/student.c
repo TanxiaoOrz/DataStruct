@@ -137,7 +137,9 @@ void newStudent(stuhead stuh) //新建学生信息
         InsertStuLink(stuh->h,pSnode);//加入链表
         key.stu=pSnode;
         InsertBTree(&(stuh->t),result.position,key,result.p);//加入二叉树
-    }    
+        printf("新增完成\n");
+    }  
+    system("pause");  
 }
 
 void deleteStudent(stuhead stuh) //删除学生信息
@@ -159,7 +161,9 @@ void deleteStudent(stuhead stuh) //删除学生信息
         pSNode pSnode = result.p->key[result.position].stu;//获取链表节点
         deleteStuLink(pSnode);//链表中删除该节点
         BTreeDelete(&(stuh->t),key);//二叉树中删除索引
+        printf("删除完成\n");
     }    
+    system("pause");
 }
 
 void showStuLesson(PStu stu) //显示学生的课程信息
@@ -503,6 +507,7 @@ int writeStudent(stuhead stu)
         else
             break;
     }
+    fclose(fp);
     return flag;
 }
 
@@ -568,6 +573,7 @@ int readStudent(stuhead stuh)
             fgetc(fp);//吸收\n或到尾端
         }    
     }
+    fclose(fp);
     return flag;
 }
 
@@ -602,6 +608,56 @@ void newActStu(stuhead stuh)
         
     }
     printf("所有学生输入完毕");
+    system("pause");
+}
+
+void changeActStu(stuhead stuh)
+{
+    printf("当前所有活动：\n");
+    printActRec();  //展示当前所有活动记录
+    printf("选择修改活动序号：_____\b\b\b");
+    int i=-1;
+    scanf("%d",&i);
+    Activity* p =searchActRec(i);
+    if (!p)
+    {
+        printf("！！！错误的序号输入！！！");
+        system("pause");
+        return;
+    }
+    char name[19];//名字
+    short showScore;//综测分
+    char time[11];//时间
+    char tail[30];//备注
+    printf("请输入活动名称____________\b\b\b\b\b\b\b\b");
+    scanf("%s",name);
+    printf("请输入活动分数____________\b\b\b\b\b\b\b\b");
+    scanf("%hd",&showScore);
+    printf("请输入活动时间____________\b\b\b\b\b\b\b\b");
+    scanf("%s",time);
+    printf("请输入活动备注____________\b\b\b\b\b\b\b\b");
+    scanf("%s",tail);
+    short change = changeActRec(p,name,time,tail,showScore);
+    if (change)
+    {
+        for (pSNode p = stuh->h->next; p;p=p->next)
+        {
+            if (change&&p->stu->engageActivity[i]=='Y')
+            {
+                p->stu->show+=change;
+            }
+            for (size_t j = i; j < actRec.count; j++)
+            {
+                /* code */
+                p->stu->engageActivity[i]=p->stu->engageActivity[i+1];
+            }
+        }
+        printf("所有学生更新完毕\n");
+    }
+    else
+    {
+        printf("综测分数值不变，不需要更新学生综测分");
+    }
     system("pause");
 }
 
@@ -663,6 +719,36 @@ void printStuActPrs(stuhead stuh,int i) //根具选择的活动，输出学生�
         }
         p=p->next;        
     }
+}
+
+void showSingleStudent(stuhead stuh)
+{
+    long code;
+    KeyType key;
+    printf("请输入要查询的学生学号____________\b\b\b\b\b\b\b\b");
+    scanf("%ld",&code);
+    key.stu=NULL;
+    key.studentNumber=code;
+    SearchResult result = SearchBTree(stuh->t, key);
+    if (result.flag=='N')
+    {
+        /* code */
+        printf("该学号不存在\n");
+    }
+    else
+    {
+        pSNode pSnode = result.p->key[result.position].stu;//获取链表节点
+        showStuLesson(pSnode->stu);
+        printf("学生活动参与信息：\n");
+        printActTitle();
+        for (size_t i = 0; i < actRec.count; i++)
+        {
+            /* code */
+            printf("%4c   ",pSnode->stu->engageActivity[i]);
+            printAct(actRec.act[i],i);
+        } 
+    } 
+    system("pause");
 }
 
 void testS()
