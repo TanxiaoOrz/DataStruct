@@ -3,7 +3,8 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "structure.h": "c",
-        "btree.h": "c"
+        "btree.h": "c",
+        "activity.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
