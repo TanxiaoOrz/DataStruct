@@ -38,7 +38,7 @@ int rankcal(stuhead stuh,pSNode stu,int type) //输入要查询的序号和成�
         switch (type)
         {
         case 0:{
-            if (p->stu->score>stu->stu->score)
+            if (p->stu->show>stu->stu->show)
             {
                 rank ++;
                 break;
@@ -85,6 +85,7 @@ void printAllstuRank(stuhead stuh,int type) //安排序和选择类型输出学�
         printf("%12d",stu->show);
         printf("\n");
         p=p->next;
+        i++;
     }
 }
 
@@ -117,19 +118,12 @@ int showSingleStuRank(stuhead stuh) //对单个学生选择类型输出排名
     printTitleStudent();
     printstudent(result.p->key[result.position].stu->stu);
     printf("该学生%s的排名是%d\n",typeTitle[i],rank);
+    system("pause");
     return 1;
 }
 
-int rankStu(stuhead stuh) //重新排序学生并输出
+int rankStu(stuhead stuh,int i) //重新排序学生并输出
 {
-    printf("请选择排序标准:0、综测分数\n");
-    printf("               1、加权成绩\n");
-    printf("               2、加权绩点\n");
-    printf("请输入标准的序号_____\b\b\b");
-    int i=0;
-    scanf("%d",&i);
-    if (i<0||i>2)
-        return 1;
     pSNode wait = stuh->h->next;
     pSNode next = wait->next;
     stuh->h->next=NULL;
@@ -138,12 +132,13 @@ int rankStu(stuhead stuh) //重新排序学生并输出
         /* code */
         next = wait->next;
 
-        int p = rankcal(stuh,wait,p);
+        int p = rankcal(stuh,wait,i);
         insertStuLinkPos(stuh,wait,p);
 
         wait = next;
     }
     printAllstuRank(stuh,i);
+    system("pause");
     return 0;
 }
 
@@ -156,7 +151,7 @@ int testF1()
     readActRec();
     printf("当前链表\n");
     PrintAllstudent(stuh->h);
-    testF2(stuh);  
+    //rankStu(stuh);  
     PrintAllstudent(stuh->h);
     return 1;
 }
