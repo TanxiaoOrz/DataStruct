@@ -7,9 +7,9 @@ typedef struct lessonScore
     unsigned long lessonCode; //课程编号
     short socre; //学生成绩
     char time; //修读学期
-    char lessonName[20]; //课程名
+    char lessonName[28]; //课程名
     short credit; //学分
-    char teacher[10];//任课教师    
+    char teacher[28];//任课教师    
     struct lessonScore *next;
 }LessonScore,*lessonLink;
 
@@ -31,7 +31,7 @@ typedef struct activityRecord //线性表存储活动名
 
 typedef struct student  //存储学生信息的单链表节点
 {
-    char studentName[10]; //姓名
+    char studentName[28]; //姓名
     long studentNumber; //学号
     short age;//年龄
     char sex;//性别

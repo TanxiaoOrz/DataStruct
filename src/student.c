@@ -12,7 +12,7 @@ void studentCreate(Student **s,char name[],long code,short age,char sex)
     (*s)->studentNumber=code;
     (*s)->age=age;
     (*s)->sex=sex;
-    strncpy((*s)->studentName,name,10);
+    strncpy((*s)->studentName,name,27);
     (*s)->socreFlag=0;
     (*s)->weightGrade=0;
     (*s)->weightScore=0;
@@ -107,7 +107,7 @@ void studentHeadInital(stuhead *stuh) //初始化学生存储管理结构
 
 void newStudent(stuhead stuh) //新建学生信息
 {
-    char name[10];
+    char name[28];
     long code;
     short age;
     char sex;

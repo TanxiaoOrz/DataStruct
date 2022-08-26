@@ -17,8 +17,8 @@ int createLessonNode(LessonScore **lnode,long lessonCode,short score,char time,c
     (*lnode)->socre=score;
     (*lnode)->time=time;
     (*lnode)->credit=credit;
-    strncpy((*lnode)->lessonName,lessonName,20);
-    strncpy((*lnode)->teacher,teacher,10);
+    strncpy((*lnode)->lessonName,lessonName,27);
+    strncpy((*lnode)->teacher,teacher,27);
     return 0;
 }
 
@@ -109,9 +109,9 @@ void lessonChange(LessonScore *lnode,long lessonCode,short score,char time,char 
     (*lnode).time=time;
     (*lnode).credit=credit;
     if (lnode->lessonName!=lessonName)
-        strncpy((*lnode).lessonName,lessonName,20);
+        strncpy((*lnode).lessonName,lessonName,27);
     if (lnode->teacher!=teacher)
-        strncpy((lnode)->teacher,teacher,10);
+        strncpy((lnode)->teacher,teacher,27);
 }
 
 void lessonPrint(LessonScore *p)
@@ -146,9 +146,9 @@ int newLesson(lessonLink h)//根据输入创建新的课程并插入课程链表
     long lessonCode;
     short score;
     char time;
-    char lessonName[10];
+    char lessonName[28];
     short credit;
-    char teacher[10];
+    char teacher[28];
     printf("请输入课程编号__________________\b\b\b\b\b");
     scanf("%ld",&lessonCode);
     printf("请输入分数__________________\b\b\b\b\b");
@@ -182,9 +182,9 @@ int changeLesson(lessonLink h)//根据输入修改课程信息，1代表输入�
     long lessonCode;
     short score;
     char time;
-    char lessonName[10];
+    char lessonName[28];
     short credit;
-    char teacher[10];
+    char teacher[28];
     printf("请输入要修改的课程编号__________________\b\b\b\b\b");
     scanf("%ld",&lessonCode);
     LessonScore *p;
