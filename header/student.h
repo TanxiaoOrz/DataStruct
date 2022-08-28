@@ -39,4 +39,6 @@ int readStudent(stuhead stuh); //读取所有学生记录
 int writeStudent(stuhead stu); //保存所有学生记录
 void showSingleStudent(stuhead stuh); //输出学号对应学生
 void changeActStu(stuhead stuh); //修改活动记录，更新学生信息
+void showActPre(stuhead sh); //输入活动序号，分别输出所有出席和未出席的学生
+
 #endif

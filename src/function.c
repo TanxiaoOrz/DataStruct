@@ -41,22 +41,25 @@ int rankcal(stuhead stuh,pSNode stu,int type) //输入要查询的序号和成�
             if (p->stu->show>stu->stu->show)
             {
                 rank ++;
-                break;
-            }   
+                
+            }
+            break;   
         }
         case 1:{
             if (p->stu->weightScore>stu->stu->weightScore)
             {
                 rank ++;
-                break;
+                
             }  
+            break;
         }    
         case 2:{
             if (p->stu->weightGrade>stu->stu->weightGrade)
             {
                 rank ++;
-                break;
+                
             }  
+            break;
         }
         }
         p=p->next;

@@ -92,18 +92,24 @@ void userChoosePanel(stuhead stuh) //选用户界面
             case 1:
             {    
                 studentPanel(stuh);
+                printf("\n\t");
+                system("pause");
                 system("cls");            
                 break;
             }
             case 2:
             {       
                 chargePanel(stuh);
+                printf("\n\t");
+                system("pause");
                 system("cls");            
                 break;
             }
             case 3:
             {       
                 instructorPanel(stuh);
+                printf("\n\t");
+                system("pause");
                 system("cls");            
                 break;
             }
@@ -281,10 +287,11 @@ void chargePanel(stuhead stuh)//班主任界面
         printf("\t\t1)新建班级活动信息\n");
         printf("\t\t2)修改班级活动信息\n");
         printf("\t\t3)删除班级活动信息\n");
-        printf("\t\t4)根据学号修改学生出勤\n");
-        printf("\t\t5)根据学号查询学生信息\n");
-        printf("\t\t6)输出所有学生信息\n");
-        printf("\t\t7)对学生信息按综测分排序\n");
+        printf("\t\t4)查询活动出勤信息\n");
+        printf("\t\t5)根据学号修改学生出勤\n");
+        printf("\t\t6)根据学号查询学生信息\n");
+        printf("\t\t7)输出所有学生信息\n");
+        printf("\t\t8)对学生信息按综测分排序\n");
         printf("\t\t0)返回登录界面\n");
         printf("================================================\n");
         printf("    请输入选项序号_____\b\b\b");
@@ -312,25 +319,31 @@ void chargePanel(stuhead stuh)//班主任界面
             }
             case 4:
             {       
-                int l[3]={0,0,1};
-                changeStu(stuh,l);
+                showActPre(stuh);
                 system("cls");            
                 break;
             }
             case 5:
             {       
-                showSingleStudent(stuh);
+                int l[3]={0,0,1};
+                changeStu(stuh,l);
                 system("cls");            
                 break;
             }
             case 6:
+            {       
+                showSingleStudent(stuh);
+                system("cls");            
+                break;
+            }
+            case 7:
             {       
                 PrintAllstudent(stuh->h);
                 system("pause");
                 system("cls");            
                 break;
             }
-            case 7:
+            case 8:
             {       
                 rankStu(stuh,0);
                 system("cls");            

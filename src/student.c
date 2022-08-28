@@ -751,6 +751,16 @@ void showSingleStudent(stuhead stuh)
     system("pause");
 }
 
+void showActPre(stuhead sh)
+{
+    int i;
+    printActRec();
+    printf("请输入要查询出勤信息的活动序号_____\b\b\b");
+    scanf("%d",&i);
+    printStuActPrs(sh,i);
+    system("pause");
+}
+
 void testS()
 {
     stuhead sh;
